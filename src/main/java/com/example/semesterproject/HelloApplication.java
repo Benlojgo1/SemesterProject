@@ -22,18 +22,24 @@ public class HelloApplication extends Application {
         gridPane.setHgap(5);
         gridPane.setVgap(5);
         MineButton[][] buttons = new MineButton[8][8];
+
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 buttons[i][j] = new MineButton(i, j);
+                //create mines
                 buttons[i][j].generateMine();
+                //add to mine count
                 if (buttons[i][j].hasMine()) {
                     mineCount++;
                 }
+                //add buttons to gridPane
                 gridPane.add(buttons[i][j], i, j);
             }
         }
+
         HBox title = new HBox();
         title.getChildren().add(new Label(String.valueOf(mineCount)));
+        title.setAlignment(Pos.CENTER);
         VBox pane = new VBox();
         pane.getChildren().addAll(title, gridPane);
         Scene scene = new Scene(pane);
