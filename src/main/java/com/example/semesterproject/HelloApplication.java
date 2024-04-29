@@ -1,9 +1,12 @@
 package com.example.semesterproject;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -19,21 +22,34 @@ public class HelloApplication extends Application {
         GridPane gridPane = new GridPane();
         gridPane.setPadding(new Insets(5, 5, 5, 5));
         gridPane.setAlignment(Pos.CENTER);
-        gridPane.setHgap(5);
-        gridPane.setVgap(5);
-        MineButton[][] buttons = new MineButton[8][8];
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        Button[][] buttons = new MineButton[8][8];
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 buttons[i][j] = new MineButton(i, j);
                 //create mines
-                buttons[i][j].generateMine();
+                ((MineButton)buttons[i][j]).generateMine();
                 //add to mine count
-                if (buttons[i][j].hasMine()) {
+                if (((MineButton)(buttons[i][j])).hasMine()) {
                     mineCount++;
                 }
                 //add buttons to gridPane
                 gridPane.add(buttons[i][j], i, j);
+            }
+        }
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                ((MineButton)buttons[i][j]).checkMine((MineButton[][])buttons);
+            }
+        }
+
+        ClickHandler clickHandler = new ClickHandler();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                buttons[i][j].setOnAction(clickHandler);
             }
         }
 
@@ -46,6 +62,19 @@ public class HelloApplication extends Application {
         stage.setTitle("Minesweeper");
         stage.setScene(scene);
         stage.show();
+    }
+
+    class ClickHandler implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent e) {
+            if (((MineButton)e.getSource()).hasMine()){
+                System.out.println("Game Over");
+            }
+            else {
+                ((MineButton)e.getSource()).setText();
+            }
+
+        }
     }
 
     public static void main(String[] args) {

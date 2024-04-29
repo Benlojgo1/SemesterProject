@@ -27,7 +27,7 @@ public class MineButton extends Button {
         }
     }
 
-    public int checkMine(MineButton[][] buttons) {
+    public void checkMine(MineButton[][] buttons) {
         // initialize row and column to find length
         int row = buttons.length;
         int column = buttons.length;
@@ -40,6 +40,9 @@ public class MineButton extends Button {
                 }
             }
         }
-        return surroundMine;
+    }
+
+    public void setText() {
+        setText(String.valueOf(surroundMine));
     }
 }
