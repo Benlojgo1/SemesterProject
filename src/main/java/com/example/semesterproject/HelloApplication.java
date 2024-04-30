@@ -35,8 +35,6 @@ public class HelloApplication extends Application {
                 //add to mine count
                 if (((MineButton)(buttons[i][j])).hasMine()) {
                     mineCount++;
-
-                    buttons[i][j].setTextFill(Color.RED);
                 }
                 //add buttons to gridPane
                 gridPane.add(buttons[i][j], i, j);
@@ -56,8 +54,6 @@ public class HelloApplication extends Application {
                 buttons[i][j].setOnAction(clickHandler);
             }
         }
-
-
 
         HBox title = new HBox();
         title.getChildren().add(new Label(String.valueOf(mineCount)));

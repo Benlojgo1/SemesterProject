@@ -16,7 +16,6 @@ public class MineButton extends Button {
         this.y = y;
         mine = false;
         surroundMine = 0;
-        setText(String.valueOf(surroundMine));
     }
 
     public boolean hasMine() {
@@ -40,16 +39,10 @@ public class MineButton extends Button {
                     }
                 }
             }
-            if (mine){
-                setText("*");
-            } else {
-                setText(String.valueOf(surroundMine));
-            }
         }
     }
 
     public void setText() {
         setText(String.valueOf(surroundMine));
-
     }
 }
