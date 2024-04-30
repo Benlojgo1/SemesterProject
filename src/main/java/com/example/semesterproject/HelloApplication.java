@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -34,11 +35,14 @@ public class HelloApplication extends Application {
                 //add to mine count
                 if (((MineButton)(buttons[i][j])).hasMine()) {
                     mineCount++;
+
+                    buttons[i][j].setTextFill(Color.RED);
                 }
                 //add buttons to gridPane
                 gridPane.add(buttons[i][j], i, j);
             }
         }
+
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -52,6 +56,8 @@ public class HelloApplication extends Application {
                 buttons[i][j].setOnAction(clickHandler);
             }
         }
+
+
 
         HBox title = new HBox();
         title.getChildren().add(new Label(String.valueOf(mineCount)));

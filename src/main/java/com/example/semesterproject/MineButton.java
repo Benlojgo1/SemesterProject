@@ -16,6 +16,7 @@ public class MineButton extends Button {
         this.y = y;
         mine = false;
         surroundMine = 0;
+        setText(String.valueOf(surroundMine));
     }
 
     public boolean hasMine() {
@@ -28,7 +29,7 @@ public class MineButton extends Button {
     }
 
     public void checkMine(MineButton[][] buttons) {
-        // initialize row and column to find length
+
         int row = buttons.length;
         int column = buttons.length;
         for (int i = x - 1; i <= x + 1; i++) {
@@ -39,10 +40,16 @@ public class MineButton extends Button {
                     }
                 }
             }
+            if (mine){
+                setText("*");
+            } else {
+                setText(String.valueOf(surroundMine));
+            }
         }
     }
 
     public void setText() {
         setText(String.valueOf(surroundMine));
+
     }
 }
