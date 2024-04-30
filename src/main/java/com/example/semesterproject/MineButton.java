@@ -29,9 +29,9 @@ public class MineButton extends Button {
     }
 
     public void checkMine(MineButton[][] buttons) {
+
         int row = buttons.length;
         int column = buttons.length;
-
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
                 if (i > -1 && i < row && j > -1 && j < column) {
@@ -46,5 +46,10 @@ public class MineButton extends Button {
                 setText(String.valueOf(surroundMine));
             }
         }
+    }
+
+    public void setText() {
+        setText(String.valueOf(surroundMine));
+
     }
 }
