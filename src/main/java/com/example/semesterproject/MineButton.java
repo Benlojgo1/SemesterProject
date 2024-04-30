@@ -27,24 +27,29 @@ public class MineButton extends Button {
         }
     }
 
-    public int checkMine(MineButton[][] buttons) {
-        int count = 0;
+    public void checkMine(MineButton[][] buttons) {
+
         int row = buttons.length;
         int column = buttons.length;
-
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
-                if (i > -1 && i < 8 && j > -1 && j < 8) {
+                if (i > -1 && i < row && j > -1 && j < column) {
                     if (buttons[i][j].hasMine()) {
-                        count++;
+                        surroundMine++;
                     }
                 }
             }
         }
-        return count;
+    }
+
+    public void setFlagText() {
+        setText("🚩");
+    }
+    public void setLoseText() {
+        setText("💣");
     }
 
     public void setText() {
-
+        setText(String.valueOf(surroundMine));
     }
 }
