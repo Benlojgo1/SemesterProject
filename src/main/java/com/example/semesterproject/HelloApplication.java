@@ -48,7 +48,7 @@ public class HelloApplication extends Application {
             }
         }
 
-        ClickHandler clickHandler = new ClickHandler();
+        ClickHandler clickHandler = new ClickHandler((MineButton[][])buttons); //Passed in buttons array
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 buttons[i][j].setOnAction(clickHandler);
@@ -67,15 +67,39 @@ public class HelloApplication extends Application {
     }
 
     class ClickHandler implements EventHandler<ActionEvent> {
+        public MineButton[][] buttons; //Field that creates a MineButton[][] array.
+        public ClickHandler(MineButton[][] buttons) { //Constructor that allows for MineButton[][] array parameter to be passed through.
+            this.buttons = buttons; //Sets buttons field to passed in array.
+        }
         @Override
         public void handle(ActionEvent e) {
-            if (((MineButton)e.getSource()).hasMine()){
-                System.out.println("Game Over");
-            }
-            else {
-                ((MineButton)e.getSource()).setText();
-            }
+            int row = buttons.length; //Initializing integer row to length of buttons array
+            int column = buttons.length; //Initializing integer column to length of buttons array
+            MineButton clickedButton = (MineButton) e.getSource(); //Creating MineButton object reference "clickedButton" that represents the button being clicked.
 
+            if (clickedButton.hasMine()) { //If the clicked button has a mine
+                clickedButton.setButtonText(); //Call setButtonText on clicked button
+                System.out.println("Game Over"); //Prompt game end to user
+            } else if (clickedButton.surroundMine == 0) { //If clicked button's surroundMine count == 0
+                clickedButton.isRevealed = true; //Set isRevealed value to true
+                clickedButton.setButtonText(); // Reveal text of clicked button
+                for (int i = clickedButton.getX() - 1; i <= clickedButton.getX() + 1; i++) { //Nested for-loop. Checks surrounding buttons.
+                    for (int j = clickedButton.getY() - 1; j <= clickedButton.getY() + 1; j++) { //Nested for-loop. Checks surrounding buttons.
+                        if (i > -1 && i < row && j > -1 && j < column) { //Checks whether coordinates are within boundary of board
+                            MineButton neighborButton = getButtonAt(i, j); //Create MineButton object reference "neighborButton" that represents neighboring buttons
+                            if (!neighborButton.isRevealed) { //If the neighboring button has not been revealed already
+                                neighborButton.fire(); // Simulate a click on the neighboring button, firing clickButton event again.
+                            }
+                        }
+                    }
+                }
+            } else { //If clicked button's surroundMine count > 0
+                clickedButton.isRevealed = true; //Set isRevealed value to true
+                clickedButton.setButtonText(); //Reveal text of clicked button
+            }
+        }
+        public MineButton getButtonAt(int x, int y){ //Public method getButtonAt.
+            return buttons[x][y]; //Returns button object at passed in coordinates.
         }
     }
 

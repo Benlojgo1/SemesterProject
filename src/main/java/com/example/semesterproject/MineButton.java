@@ -1,15 +1,19 @@
 package com.example.semesterproject;
 
+import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
+import javafx.scene.paint.Color;
 
 public class MineButton extends Button {
     int x;
     int y;
     public boolean mine;
     public int surroundMine;
+    public boolean isRevealed;
     MineButton() {
         mine = false;
         surroundMine = 0;
+        isRevealed = false;
     }
     MineButton(int x, int y) {
         this.x = x;
@@ -42,7 +46,20 @@ public class MineButton extends Button {
         }
     }
 
-    public void setText() {
-        setText(String.valueOf(surroundMine));
+    public void setButtonText() { //Renamed method from setText() to setButtonText to avoid confusion with JavaFX method of same name
+        if (hasMine()){
+            setText("*");
+            setTextFill(Color.RED);
+        } else{
+                setText(String.valueOf(surroundMine));
+        }
+    }
+
+    public int getY() {
+        return this.y;
+    }
+
+    public int getX() {
+        return this.x;
     }
 }
