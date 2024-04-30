@@ -43,4 +43,8 @@ public class MineButton extends Button {
         }
         return count;
     }
+
+    public void setText() {
+
+    }
 }
