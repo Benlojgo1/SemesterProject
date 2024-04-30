@@ -10,10 +10,13 @@ public class MineButton extends Button {
     public boolean mine;
     public int surroundMine;
     public boolean isRevealed;
+
+    public boolean hasFlag;
     MineButton() {
         mine = false;
         surroundMine = 0;
         isRevealed = false;
+        hasFlag = false;
     }
     MineButton(int x, int y) {
         this.x = x;
@@ -46,9 +49,10 @@ public class MineButton extends Button {
         }
     }
 
+
     public void setButtonText() { //Renamed method from setText() to setButtonText to avoid confusion with JavaFX method of same name
         if (hasMine()){
-            setText("*");
+            setText("💣");
             setTextFill(Color.RED);
         } else{
                 setText(String.valueOf(surroundMine));
@@ -61,5 +65,16 @@ public class MineButton extends Button {
 
     public int getX() {
         return this.x;
+    }
+
+    public void setFlagText() {
+        if (hasFlag){
+            setText("");
+            hasFlag = false;
+        }
+        else {
+            setText("🚩");
+            hasFlag = true;
+        }
     }
 }
