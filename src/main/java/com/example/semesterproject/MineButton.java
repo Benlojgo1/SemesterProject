@@ -42,6 +42,13 @@ public class MineButton extends Button {
         }
     }
 
+    public void setFlagText() {
+        setText("F");
+    }
+    public void setLoseText() {
+        setText("*");
+    }
+
     public void setText() {
         setText(String.valueOf(surroundMine));
     }

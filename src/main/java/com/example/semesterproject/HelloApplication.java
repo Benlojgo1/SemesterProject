@@ -1,17 +1,17 @@
 package com.example.semesterproject;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -19,6 +19,7 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+        // Initialize int that holds amount of mines
         int mineCount = 0;
         GridPane gridPane = new GridPane();
         gridPane.setPadding(new Insets(5, 5, 5, 5));
@@ -51,7 +52,7 @@ public class HelloApplication extends Application {
         ClickHandler clickHandler = new ClickHandler();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                buttons[i][j].setOnAction(clickHandler);
+                buttons[i][j].setOnMouseClicked(clickHandler);
             }
         }
 
@@ -66,16 +67,19 @@ public class HelloApplication extends Application {
         stage.show();
     }
 
-    class ClickHandler implements EventHandler<ActionEvent> {
+    class ClickHandler implements EventHandler<MouseEvent> {
         @Override
-        public void handle(ActionEvent e) {
-            if (((MineButton)e.getSource()).hasMine()){
-                System.out.println("Game Over");
+        public void handle(MouseEvent e) {
+            if (e.getButton() == MouseButton.SECONDARY) {
+                ((MineButton) e.getSource()).setFlagText();
             }
             else {
-                ((MineButton)e.getSource()).setText();
+                if (((MineButton) e.getSource()).hasMine()) {
+                    ((MineButton) e.getSource()).setLoseText();
+                } else {
+                    ((MineButton) e.getSource()).setText();
+                }
             }
-
         }
     }
 
