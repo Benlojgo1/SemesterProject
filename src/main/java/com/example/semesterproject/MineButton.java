@@ -1,22 +1,28 @@
 package com.example.semesterproject;
 
+import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
+import javafx.scene.paint.Color;
 
 public class MineButton extends Button {
     int x;
     int y;
     public boolean mine;
     public int surroundMine;
+    public boolean isRevealed;
+
+    public boolean hasFlag;
     MineButton() {
         mine = false;
         surroundMine = 0;
+        isRevealed = false;
+        hasFlag = false;
     }
     MineButton(int x, int y) {
         this.x = x;
         this.y = y;
         mine = false;
         surroundMine = 0;
-        setText(String.valueOf(surroundMine));
     }
 
     public boolean hasMine() {
@@ -40,16 +46,35 @@ public class MineButton extends Button {
                     }
                 }
             }
-            if (mine){
-                setText("*");
-            } else {
-                setText(String.valueOf(surroundMine));
-            }
         }
     }
 
-    public void setText() {
-        setText(String.valueOf(surroundMine));
 
+    public void setButtonText() { //Renamed method from setText() to setButtonText to avoid confusion with JavaFX method of same name
+        if (hasMine()){
+            setText("💣");
+            setTextFill(Color.RED);
+        } else{
+                setText(String.valueOf(surroundMine));
+        }
+    }
+
+    public int getY() {
+        return this.y;
+    }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public void setFlagText() {
+        if (hasFlag){ //If tile has a flag
+            setText(""); //Empty text
+            hasFlag = false; //set hasFlag to false
+        }
+        else { //If tile doesn't have a flag
+            setText("🚩"); //Set text to flag emoji
+            hasFlag = true; //Set hasFlag to true
+        }
     }
 }
