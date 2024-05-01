@@ -107,9 +107,9 @@ public class HelloApplication extends Application {
                     }
                 }
             }
-            if (e.getButton() == MouseButton.SECONDARY){
-                if(!clickedButton.isRevealed){
-                    clickedButton.setFlagText();
+            if (e.getButton() == MouseButton.SECONDARY){ //If right click
+                if(!clickedButton.isRevealed){ //While flag isn't revealed
+                    clickedButton.setFlagText(); //Call set flag text method
                 }
             }
         }

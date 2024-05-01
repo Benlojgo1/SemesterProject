@@ -68,13 +68,13 @@ public class MineButton extends Button {
     }
 
     public void setFlagText() {
-        if (hasFlag){
-            setText("");
-            hasFlag = false;
+        if (hasFlag){ //If tile has a flag
+            setText(""); //Empty text
+            hasFlag = false; //set hasFlag to false
         }
-        else {
-            setText("🚩");
-            hasFlag = true;
+        else { //If tile doesn't have a flag
+            setText("🚩"); //Set text to flag emoji
+            hasFlag = true; //Set hasFlag to true
         }
     }
 }
