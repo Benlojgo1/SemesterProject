@@ -65,6 +65,7 @@ public class HelloApplication extends Application {
         feedbackRow.setVisible(false);
 
         ClickHandler clickHandler = new ClickHandler((MineButton[][])buttons, feedbackRow, mineCount); //Passed in buttons array
+
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 buttons[i][j].setOnMouseClicked(clickHandler);
@@ -102,14 +103,11 @@ public class HelloApplication extends Application {
             stage.setScene(startScene);
         });
 
-
-
         stage.setTitle("Minesweeper");
         stage.setScene(startScene);
         stage.show();
     }
 
-//<<<<<<< HEAD
     public class ClickHandler implements EventHandler<MouseEvent> {
 
         public MineButton[][] buttons; //Field that creates a MineButton[][] array.
@@ -125,6 +123,7 @@ public class HelloApplication extends Application {
         int tileCount = 0;
 
     @Override
+
         public void handle(MouseEvent e) {
             int row = buttons.length; //Initializing integer row to length of buttons array
             int column = buttons.length; //Initializing integer column to length of buttons array
@@ -139,12 +138,20 @@ public class HelloApplication extends Application {
             if (e.getButton() == MouseButton.PRIMARY){
                 if(!clickedButton.hasFlag){
                     if (clickedButton.hasMine()) { //If the clicked button has a mine
-                        clickedButton.setButtonText(); //Call setButtonText on clicked button
                         System.out.println("Game Over"); //Prompt game end to user
+                        /** This reveals all mines once user clicks one mine*/
+                        for (int i = 0; i < row; i++) {
+                            for (int j = 0; j < column; j++) {
+                                if (buttons[i][j].hasMine()){
+                                    buttons[i][j].setButtonText();
+                                }
+                            }
+                        }
+
                         for (Node nodeIn: feedbackPane.getChildren() //For all nodes in feedbackPane
                         ) { if(nodeIn instanceof Text){ //if node is an object of type Text
                             ((Text) nodeIn).setText("You have lost! "); //Set text to losing text.
-                            }
+                        }
                         }
                         feedbackPane.setVisible(true); //Set feedback pane to be visible
                         gameOver = true; //Set gameOver true
@@ -164,10 +171,12 @@ public class HelloApplication extends Application {
                                 }
                             }
                         }
+
                     } else if (!clickedButton.isRevealed){ //If clicked button's surroundMine count > 0
                         clickedButton.isRevealed = true; //Set isRevealed value to true
                         tileCount++;
                         System.out.println(tileCount);
+
                         clickedButton.setButtonText(); //Reveal text of clicked button
                     }
                 }
@@ -182,6 +191,7 @@ public class HelloApplication extends Application {
                 feedbackPane.setVisible(true);
                 gameOver = true;
             }
+
             if (e.getButton() == MouseButton.SECONDARY){ //If right click
                 if(!clickedButton.isRevealed){ //While flag isn't revealed
                     clickedButton.setFlagText(); //Call set flag text method

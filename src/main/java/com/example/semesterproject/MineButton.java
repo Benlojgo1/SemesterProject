@@ -49,18 +49,18 @@ public class MineButton extends Button {
         }
     }
 
-
     public void setButtonText() { //Renamed method from setText() to setButtonText to avoid confusion with JavaFX method of same name
         if (hasMine()){
             setText("💣");
             setTextFill(Color.RED);
         } else{
-                setText(String.valueOf(surroundMine));
+            setText(String.valueOf(surroundMine));
         }
     }
 
     public int getY() {
         return this.y;
+
     }
 
     public int getX() {
@@ -76,5 +76,6 @@ public class MineButton extends Button {
             setText("🚩"); //Set text to flag emoji
             hasFlag = true; //Set hasFlag to true
         }
+
     }
 }
