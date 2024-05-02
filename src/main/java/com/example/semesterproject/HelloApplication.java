@@ -2,6 +2,7 @@ package com.example.semesterproject;
 
 import javafx.application.Application;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -63,7 +64,7 @@ public class HelloApplication extends Application {
         feedback.setFont(new Font(20));
         feedbackRow.setVisible(false);
 
-        ClickHandler clickHandler = new ClickHandler((MineButton[][])buttons, feedbackRow); //Passed in buttons array
+        ClickHandler clickHandler = new ClickHandler((MineButton[][])buttons, feedbackRow, mineCount); //Passed in buttons array
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 buttons[i][j].setOnMouseClicked(clickHandler);
@@ -73,8 +74,6 @@ public class HelloApplication extends Application {
         HBox title = new HBox();
         title.getChildren().add(new Label("Flag Count: " + String.valueOf(mineCount)));
         title.setAlignment(Pos.CENTER);
-
-
 
         VBox gamePane = new VBox();
         gamePane.getChildren().addAll(title, gridPane, feedbackRow);
@@ -98,6 +97,11 @@ public class HelloApplication extends Application {
         button.setOnAction(e -> {
             stage.setScene(gameScene);
         });
+        exitButton.setOnAction(e -> {
+            stage.close();
+            stage.setScene(startScene);
+        });
+
 
 
         stage.setTitle("Minesweeper");
@@ -110,14 +114,15 @@ public class HelloApplication extends Application {
 
         public MineButton[][] buttons; //Field that creates a MineButton[][] array.
         public HBox feedbackPane;
-
-        public Text text;
-        public ClickHandler(MineButton[][] buttons, HBox feedbackPane) { //Constructor that allows for MineButton[][] array parameter to be passed through.
+        public int mineCount;
+        public ClickHandler(MineButton[][] buttons, HBox feedbackPane, int mineCount) { //Constructor that allows for MineButton[][] array parameter to be passed through.
             this.buttons = buttons; //Sets buttons field to passed in array.
             this.feedbackPane = feedbackPane;
+            this.mineCount = mineCount;
 
         }
         boolean gameOver = false;
+        int tileCount = 0;
 
     @Override
         public void handle(MouseEvent e) {
@@ -144,8 +149,10 @@ public class HelloApplication extends Application {
                         feedbackPane.setVisible(true); //Set feedback pane to be visible
                         gameOver = true; //Set gameOver true
 
-                    } else if (clickedButton.surroundMine == 0) { //If clicked button's surroundMine count == 0
+                    } else if (clickedButton.surroundMine == 0 && !clickedButton.isRevealed) { //If clicked button's surroundMine count == 0
                         clickedButton.isRevealed = true; //Set isRevealed value to true
+                        tileCount++;
+                        System.out.println(tileCount);
                         clickedButton.setButtonText(); // Reveal text of clicked button
                         for (int i = clickedButton.getX() - 1; i <= clickedButton.getX() + 1; i++) { //Nested for-loop. Checks surrounding buttons.
                             for (int j = clickedButton.getY() - 1; j <= clickedButton.getY() + 1; j++) { //Nested for-loop. Checks surrounding buttons.
@@ -157,11 +164,23 @@ public class HelloApplication extends Application {
                                 }
                             }
                         }
-                    } else { //If clicked button's surroundMine count > 0
+                    } else if (!clickedButton.isRevealed){ //If clicked button's surroundMine count > 0
                         clickedButton.isRevealed = true; //Set isRevealed value to true
+                        tileCount++;
+                        System.out.println(tileCount);
                         clickedButton.setButtonText(); //Reveal text of clicked button
                     }
                 }
+            }
+
+            if (tileCount == row * column - mineCount) {
+                for (Node nodeIn: feedbackPane.getChildren() //For all nodes in feedbackPane
+                ) { if(nodeIn instanceof Text){ //if node is an object of type Text
+                    ((Text) nodeIn).setText("You have won! "); //Set text to losing text.
+                }
+                }
+                feedbackPane.setVisible(true);
+                gameOver = true;
             }
             if (e.getButton() == MouseButton.SECONDARY){ //If right click
                 if(!clickedButton.isRevealed){ //While flag isn't revealed
